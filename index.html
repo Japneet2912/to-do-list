@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Current Date, Time, and Task List</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+        }
+        h1 {
+            color: #333;
+        }
+        #taskInput {
+            margin-top: 20px;
+        }
+        table {
+            width: 60%; /* Adjust the width as needed */
+            border-collapse: collapse;
+            margin-top: 20px;
+            text-align: left;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        th, td {
+            border: 1px solid #ccc;
+            padding: 8px;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .completed {
+            text-decoration: line-through;
+            color: #888;
+        }
+        button {
+            background-color: #ff6347;
+            color: #fff;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1 id="datetime"></h1>
+
+    <div>
+        <input type="text" id="taskInput" placeholder="Add a new task">
+        <button onclick="addTask()">Add Task</button>
+    </div>
+
+    <h2>Task List</h2>
+
+    <table id="taskList">
+        
+            <tr>
+                <th>Sr. No.</th>
+                <th>Task Name</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+            
+        <tbody>
+
+        </tbody>
+    </table>
+
+<script>
+
+
+var serialNumber = 1;
+
+function addTask() {
+    var taskInput = document.getElementById('taskInput');
+    var taskText = taskInput.value.trim();
+
+    if (taskText !== '') {
+        var taskList = document.getElementById('taskList');
+        var newRow = taskList.insertRow(-1);
+
+        var serialCell = newRow.insertCell(0);
+        var taskNameCell = newRow.insertCell(1);
+        var statusCell = newRow.insertCell(2);
+        var actionCell = newRow.insertCell(3);
+
+        serialCell.textContent = serialNumber;
+        taskNameCell.textContent = taskText;
+        statusCell.innerHTML = '<button onclick="completed(this)">Completed</button>';
+        actionCell.innerHTML = '<button onclick="removeTask(this)">Remove</button>';
+
+        // Increment the serial number for the next task
+        serialNumber++;
+
+        // Clear the input field after adding the task
+        taskInput.value = '';
+    }
+}
+
+function removeTask(buttonElement) {
+    var row = buttonElement.closest('tr');
+    row.parentNode.removeChild(row);
+}
+
+
+function completed(buttonElement) {
+    var row = buttonElement.closest('tr');
+    
+    
+    if(buttonElement.textContent=="Completed"){
+        row.style.backgroundColor = 'green'; 
+        buttonElement.textContent = "Incomplete"
+    }
+
+
+    else if(buttonElement.textContent=="Incomplete"){
+        row.style.backgroundColor = ''; 
+        buttonElement.textContent = "Completed"
+    }
+
+
+}
+
+
+
+function updateDateTime() {
+    var now = new Date();
+    var date = now.toDateString();
+    var time = now.toLocaleTimeString();
+
+    var dateTimeString = date + ' ' + time;
+    document.getElementById('datetime').textContent = dateTimeString;
+}
+
+updateDateTime();
+setInterval(updateDateTime, 1000);
+
+</script>
+
+
+</body>
+</html>
